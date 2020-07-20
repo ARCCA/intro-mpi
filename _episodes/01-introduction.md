@@ -1,7 +1,7 @@
 ---
 title: "Introduction"
-teaching: 0
-exercises: 0
+teaching: 25
+exercises: 5
 questions:
 - "What is a parallel computer?"
 - "What parallel programming models are there?"
