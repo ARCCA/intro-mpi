@@ -1,7 +1,7 @@
 ---
 title: "MPI point to point communication"
-teaching: 0
-exercises: 0
+teaching: 45
+exercises: 15
 questions:
 - "How do I send a message?"
 - "How do I know if it was successful?"
@@ -244,6 +244,22 @@ from mpi4py import MPI
 MPI.Get_processor_name()
 ~~~
 {: .language-python}
+
+## Optimizing communication
+
+In `mpi4py` there are multiple ways to call the same method due to its automatic handling of Python datatypes such as
+dictionaries and lists. These calls tend to start with a lowercase as in the examples above, e.g. `comm.irecv` but to
+gain some speedup there are the direct C-style functions called with uppercase, e.g. `comm.Irecv` and expects the
+buffers to be passed as an argument as in `comm.Irecv([buffer, MPI_INT], source=0, tag=0)`. Note the `buffer` is now in
+n list with the second entry the MPI datatype of the buffer.  This speeds up commnicatation rather than `mpi4py`
+converting all buffers with raw bytes with pickle but can only be used for MPI standard types.
+
+When using `numpy` arrays, the datatype of the arrays is stored with the data and therefore `mpi4py` can query the
+datatype and specify the correct MPI datatype in the communication.  This only supports standard `numpy` C datatypes.
+
+To keep things simple we will use the lowercase variant that supports all types.
+
+
 
 ## Further information
 
