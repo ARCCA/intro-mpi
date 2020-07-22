@@ -46,12 +46,12 @@ If data needs to be shared across processors to decompose the problem into a sma
 In `mpi4py` this is achieved with:
 
 ~~~
-comm.scatter(buffer, root=0)
-buffer = comm.gather(buffer, root=0)
+recvbuffer = comm.scatter(sendbuffer, root=0)
+recvbuffer = comm.gather(sendbuffer, root=0)
 ~~~
 {: .language-python}
 
-Where buffer is defined on MPI task 0 whilst gather returns a value only on MPI task 0.
+For scatter, sendbuffer is defined on MPI task 0 whilst for gather recvbuffer returns a value only on MPI task 0.
 
 There are also the uppercase `comm.Scatter` and `comm.Gather` along with non-blocking variants `comm.Iscatter` and
 `comm.Igather` that has to be provided with datatypes of the data (or using `numpy` arrays).
@@ -106,7 +106,7 @@ There are also the non-blocking versions of all communication, e.g. `MPI_Iallgat
 > > ~~~
 > > {: .language-python}
 > > 
-> > See the example in [scatter.py]({{ site.baseurl }}/files/scatter.py)
+> > See the example in [scatter.py]({{ site.baseurl }}/files/example3/scatter.py)
 > > 
 > {: .solution}
 {: .challenge}
@@ -188,7 +188,7 @@ If the result is required on all MPI tasks then `MPI_Allreduce` is used instead.
 > > ~~~
 > > {: .language-python}
 > > 
-> > For the complete solution see [sine.py]({{ site.baseurl }}/files/sine.py).
+> > For the complete solution see [sine.py]({{ site.baseurl }}/files/example4/sine.py).
 > {: .solution}
 {: .challenge}
 
