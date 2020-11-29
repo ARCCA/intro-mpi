@@ -112,6 +112,7 @@ Then run in SLURM with:
 #SBATCH --ntasks=3
 #SBATCH --tasks-per-node=3
 #SBATCH -o HelloPython.out
+#SBATCH -t 00:05:00
 
 # Load required modules. module purge
 module load python

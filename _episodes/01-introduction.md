@@ -93,25 +93,19 @@ Although CPU developers continue working towards increasing CPU clock speeds by 
 > ## Amdahl's Law
 >
 > Amdahl's Law places a strict limit on the speedup that can be realized by using multiple processors. For example time
-> using 'n' processors is `t_n` and fraction of code that is parallel, `f_p`, and fraction of code that is serial, `f_s`
-> can be shown to be:
-> ~~~
-> t_n = ( (f_p / n ) + f_s ) × t_1
-> ~~~
-> {: .source}
+> using *n* processors is *t<sub>n</sub>* and fraction of code that is parallel, *f<sub>p</sub>*, and fraction of code that is serial,
+> *f<sub>s</sub>* can be shown to be:
+> ![Amdahl's Law](../fig/amdahls-law.svg "Amdahl's Law"){: height="25%" width="25%"}
 >
-> This can be rearranged to give relative speedup
-> ~~~
-> 1 / ( (f_p / n ) + f_s )
-> ~~~
-> {: .source}
+> This can be rearranged to give relative speedup *S*:
+> ![Amdahl's Law](../fig/amdahls-law-speedup.svg "Amdahl's Law Speedup"){: height="12%" width="12%"}
 > 
 > What is the limit if code is 100% parallel? What happens if you throw infinite number of processors at a problem with
 > non-zero serial fraction of code.?
 > > ## Solution
 > >
-> > - If `f_s` is zero then speedup is equal to number of processors `n`
-> > - If `n` approaches infinity, speedup is `1/f_s`. If only 1% of code is serial, you cannot get speedup of more than
+> > - If *f<sub>s</sub>* is zero then speedup is equal to number of processors *n*.
+> > - If *n* approaches infinity, speedup is 1/*f<sub>s</sub>*. If only 1% of code is serial, you cannot get speedup of more than
 > >   100.
 > {: .solution}
 {: .challenge}
@@ -157,7 +151,7 @@ DO i = 1, size
   F(i) = C(i) * D(i)
 END DO
 ~~~
-{: .source}
+{: .language-fortran}
 
 Consider the following figure. In a shared memory system all processors have access to a vector's elements and any modifications are readily available to all other processors, while in a distributed memory system, a vector elements would be decomposed (*data parallelism*). Each processor can handle a subset of the overall vector data. If there are no dependencies as in the previous example, parallelization is straightforward. Careful consideration is required to solve any dependencies, e.g. A(i) = B(i-1) + B (i+1).
 
