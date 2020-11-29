@@ -18,19 +18,19 @@ keypoints:
 
 ## A brief history
 
-The idea of message passing evolved in the 1980s where supercomputers were domincated by Cray.  Due to dependency on
-Cray and competition was difficult this required new approaches to supercomputing.  Message passing was born out of a
-desire to link competing technologies.  Cray has realised many cheaper commodity processors could be linked together
-cheaper than fewer expensive vector processors.  To make sure code was portable between systems, assurances were made to
-make this possible hence MPI was formed.
+The idea of message passing evolved in the 1980s where supercomputers were dominated by [Cray](https://en.wikipedia.org/wiki/Cray).
+Due to dependency on Cray and competition was difficult this required new approaches to supercomputing.  Message passing was born 
+out of a desire to link competing technologies. Cray realised that many cheaper commodity processors could be linked together
+cheaper than fewer expensive vector processors. To make sure code was portable between systems, assurances were made to make this
+possible hence MPI was formed.
 
-MPI forum was formed in 1992 with first standard in 1994, available in C and Fortran.  Easiest approach was to
-decompose data for processors to work on the same problem (but different views).  Works within processors on a node and
-across a network.  Limited only by *Amdahl's Law*.
+MPI forum was formed in 1992 with its first standard in 1994, available in C and Fortran. The easiest approach was to decompose 
+data for processors to work on the same problem (but different views). This works within processors on a node and across a network
+and is Limited only by *Amdahl's Law*.
 
-MPI standard is **large**, but the good news is many programs only use a small subset.  There are many sophisticated
-functions available.  The design of MPI makes no assumptions on underlying hardware so work with homogenous and
-heterogeneuos systems, that is to say it is hardware vendor neutral.
+MPI standard is **large**, but the good news is that many programs only use a small subset. There are many sophisticated functions
+available. The design of MPI makes no assumptions on underlying hardware so work with homogenous and heterogeneuos systems, that
+is to say it is hardware vendor neutral.
 
 > ## ECMWF weather and climate model IFS
 >
@@ -49,9 +49,9 @@ translated into other languages. The web can be used for information.
 >   - One program executes mutliple times.
 >   - Problem divided using the same executable code.
 >
-> - **MPMD** - Multiple Prgram Multiple Data can be trickier to master.
+> - **MPMD** - Multiple Program Multiple Data can be trickier to master.
 >   - Different executables used to communicate
->   - Useful to couple different models that would contain completely different appraoches such as ocean and atmosphere
+>   - Useful to couple different models that would contain completely different approaches such as ocean and atmosphere
 >    modelling.
 >   - Available in MPI version 2.0
 {: .callout}
@@ -74,14 +74,20 @@ translated into other languages. The web can be used for information.
 The following command executes a 3 MPI tasks.
 
 ~~~
-$ mpirun -np 3 hello_world
+$ mpirun -np 3 echo "hello_world"
 ~~~
 {: .language-bash}
 
+~~~
+hello_world
+hello_world
+hello_world
+~~~
+{: .output}
+
 ![mpirun example](../fig/mpirun_example.png)
 
-A hello world progrm may be written as
-
+A more meaningful *hello world* program may be written as:
 ~~~
 #!/bin/env python
 #
@@ -96,10 +102,10 @@ if __name__ == "__main__":
         comm = MPI.COMM_WORLD # Initiate communications
         rank = comm.Get_rank()
         size = comm.Get_size()
+        # Say hello
+        print(f"Hello World from process: {rank} of {size}")
     except Exception as err:
         sys.exit("Error: %s" % err)
-    # Say hello
-    print(f"Hello World from process: {rank} of {size}")
 ~~~
 {: .language-python}
 
@@ -117,14 +123,14 @@ Then run in SLURM with:
 # Load required modules. module purge
 module load python
 module load mpi
-# Run 4 (mpirun knows SLURM variables) copies of the code
+# Run 3 (mpirun knows SLURM variables) copies of the code
 mpirun python3 hello_parallel.py
 ~~~
 {: .language-bash}
 
 ## Initialisation and identification
 
-The MPI standard defines the following.
+The [MPI standard](https://www.mpi-forum.org/docs/) defines the following.
 
 - **`MPI_init` and `MPI_init_thread`** - initialises MPI environment.  Required by MPI standard.
 - **`MPI_COMM_WORLD`** - a provided communicator that allows all processors to "talk" to all others.
@@ -147,7 +153,7 @@ at import time the `MPI_init_thread` is called. At exit `MPI_finalize` is called
 > ## Install the package on Hawk
 >
 > Since this is a Python package, anyone should be able to download and install the package.  How would you go about
-> doing this? (Hint: Look at previous [Advanced use of Hawk the Supercomputer](hpc-advanced)
+> doing this? (Hint: Look at previous [SLURM Advanced Topics](https://arcca.github.io/slurm_advanced_topics/08-packages/index.html)
 > > ## Solution
 > >
 > > There is a dependency on MPI so you would need to load the mpi module.  The Python package will already load a
