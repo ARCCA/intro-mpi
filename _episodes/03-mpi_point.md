@@ -131,7 +131,7 @@ data = comm.recv(source=?, tag=?)
 > > ## Solution
 > > 
 > > The key thing is to make sure one of the pairs (either the odd or even) send the data first whilst the other pair
-> > waits to recieve the data.  See [point.py]({{ site.baseurl }}/files/example2/point.py)
+> > waits to recieve the data.  See [point.py]({{ site.baseurl }}/files/example2/point.py) and the corresponding [slurm job script]({{ site.baseurl }}/files/example2/pointtopoint-slurm.sh).
 > {: .solution}
 {: .challenge}
 
@@ -168,7 +168,7 @@ sending and recieving at the same time.
 > > The key difference is the sends and recieves do not need to be different (no matching send to a recieve in order
 > > this time.  Just `isend` and `irecv` and then `wait` for the sends to complete and then receive the data.
 > > 
-> > Check out the [point_nonblock.py]({{ site.baseurl }}/files/example2/point_nonblock.py)
+> > Check out the [point_nonblock.py]({{ site.baseurl }}/files/example2/point_nonblock.py) and the corresponding [slurm job script]({{ site.baseurl }}/files/example2/{{ site.baseurl }}/files/example2/point_nonblock.py).
 > {: .solution}
 {: .challenge}
 

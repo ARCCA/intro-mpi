@@ -1,4 +1,4 @@
-#!/bin/env python
+#!/bin/env python3
 # Example of blocking point-to-point MPI communication. Pairs of processes
 # will send and receive data to and from each other in the form of
 # pickled python dictionaries.

@@ -1,4 +1,4 @@
-#!/bin/env python
+#!/bin/env python3
 # Scatter data across multiple processes. The data consists of a
 # two-dimensional numpy array, which each process receiving a row.
 

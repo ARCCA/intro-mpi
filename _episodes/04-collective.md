@@ -106,7 +106,7 @@ There are also the non-blocking versions of all communication, e.g. `MPI_Iallgat
 > > ~~~
 > > {: .language-python}
 > > 
-> > See the example in [scatter.py]({{ site.baseurl }}/files/example3/scatter.py)
+> > See the example in [scatter.py]({{ site.baseurl }}/files/example3/scatter.py) and the corresponding [slurm job script]({{ site.baseurl }}/files/example3/scatter-slurm.sh).
 > > 
 > {: .solution}
 {: .challenge}

@@ -3,12 +3,16 @@
 #SBATCH -t 0-00:05:00
 #SBATCH -J PointtoPoint
 #SBATCH -p compute
-#SBATCH --account=scw1248
-#SBATCH -o pointtopoint.out.%J
+#SBATCH --account=scwXXXX
+#SBATCH -o pointtopoint.out.%j
+
+# if run on a training session add your reservation code as
+# #SBATCH --reservation=training
 
 # Load required modules.
 module purge
-module load mpi4py/20181128
+module load python
+module load mpi
 module list
 
 # Create an output directory on the fast scratch filesystem, and
@@ -22,4 +26,4 @@ cp $SLURM_SUBMIT_DIR/point.py .
 
 # Run a number of copies of the code equal to the number of
 # MPI processes requested.
-mpirun -np 12 ./point.py
+mpirun -np 12 python3 point.py
