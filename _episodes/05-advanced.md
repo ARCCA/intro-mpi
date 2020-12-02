@@ -79,8 +79,9 @@ fh.Close()
 ~~~
 {: .language-python}
 
-Useful where collective calls do not naturally fit in code or overhead of collective calls outweigh benefits (e.g. small
-I/O)
+Useful where collective calls do not naturally fit in code or overhead of
+collective calls outweigh benefits (e.g. small I/O). You can find an 
+example in [mpiio.independent.py]({{ site.baseurl }}/files/example5/mpiio.independent.py) and its corresponding [mpiio.independent-slurm.sh]({{ site.baseurl }}/files/example5/mpiio.independent-slurm.sh).
 
 ### Collective non-contiguous I/O
 
@@ -135,6 +136,7 @@ filetype.Free()
 fh.Close()
 ~~~
 {: .language-python}
+You can find an example in [mpiio.non.contiguous.py]({{ site.baseurl }}/files/example5/mpiio.non.contiguous.py) and its corresponding [mpiio.non.contiguous-slurm.sh]({{ site.baseurl }}/files/example5/mpiio.non.contiguous-slurm.sh).
 
 ### Contiguous collective I/O
 
@@ -155,8 +157,7 @@ Contiguous collective I/O is where all tasks are used to perform the I/O operati
 > >
 > {: .solution}
 {: .challenge}
-
-See example in [mpiio.py]({{ site.baseurl }}/files/example5/mpiio.py)
+You can find an example in [mpiio.collective.py]({{ site.baseurl }}/files/example5/mpiio.collective.py) and its corresponding [mpiio.collective-slurm.sh]({{ site.baseurl }}/files/example5/mpiio.collective-slurm.sh).
 
 ### Access patterns
 

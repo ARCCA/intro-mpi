@@ -36,7 +36,7 @@ buffer = comm.bcast(buffer, root=0)
 ~~~
 {: .language-python}
 
-Where `buffer` is the the data to be broadbase for the MPI task given as root (in this case 0).  The MPI datatype is
+Where `buffer` is the the data to be broadcast for the MPI task given as root (in this case 0).  The MPI datatype is
 optional and automatic discovery can be used instead with the lowercase method name.
 
 ## Scattering and gathering
@@ -58,8 +58,7 @@ There are also the uppercase `comm.Scatter` and `comm.Gather` along with non-blo
 
 ## Further scattering and gathering
 
-Scatter and gather is a building block for many other types of communication pattern with the only difference being
-where we want the results to reside.
+Scatter and gather are the building blocks for many other types of communication patterns with the only difference being where we want the results to reside.
 
 > ## Gather-like
 > - `MPI_Allgather` - gather one array onto all tasks. `comm.allgather` or `comm.Allgather`
@@ -188,7 +187,7 @@ If the result is required on all MPI tasks then `MPI_Allreduce` is used instead.
 > > ~~~
 > > {: .language-python}
 > > 
-> > For the complete solution see [sine.py]({{ site.baseurl }}/files/example4/sine.py).
+> > For the complete solution see [sine.py]({{ site.baseurl }}/files/example4/sine.py) and the corresponding [slurm job script]({{ site.baseurl }}/files/example4/sine-slurm.sh).
 > {: .solution}
 {: .challenge}
 

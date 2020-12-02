@@ -1,4 +1,4 @@
-#!/bin/env python
+#!/bin/env python3
 # This code demonstrates collective communication, specifically the Broadcast
 # and Reduce functions. It distributes the iterative calculation of sin(x)
 # over an arbitrary number of processes, and then collates the result at
