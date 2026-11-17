@@ -3,27 +3,24 @@
 # will send and receive data to and from each other in the form of
 # pickled python dictionaries.
 
-from mpi4py import MPI
-import numpy as np
+from mpi4py import MPI # Python MPI library
 
 if __name__ == "__main__":
 
     # Initialise a communicator and get the rank of this process.
     try:
-        comm = MPI.COMM_WORLD
+        comm = MPI.COMM_WORLD # Initiate communications
         rank = comm.Get_rank()
-        nprocs = comm.size
+        size = comm.Get_size()
     except Exception as err:
         sys.exit("Error: %s" % err)
 
     # Create a python dictionary containing the rank and world size which we
     # will send via MPI point-to-point communication methods.
-    send_data = {'rank': rank, 'world': nprocs}
+    send_data = {'rank': rank, 'world': size}
 
     # Even numbered processes send data to process rank + 1, whilst odd
-    # numbered processes send data to process rank - 1. Note that even
-    # processes send first and odd processes receive first - two processes
-    # sending or receiving simultaneously results in a 'deadlock'.
+    # numbered processes send data to process rank - 1.
     if rank % 2 == 0:
         # Determine rank of process to exchange data with and set communication
         # tags.
@@ -35,14 +32,17 @@ if __name__ == "__main__":
         sendtag = 100 + rank
         recvtag = exch_rank
 
-    # All processes can send and receive data here and then continue
-    # processing. Note, that there's no guarantee at this point that
-    # data has actually been received.
+    # all processes send their data, no need to pair with requests
     sendreq = comm.isend(send_data, dest=exch_rank, tag=sendtag)
 
     # Further processing could occur here while the MPI libraries perform
     # the communication...
+
+    # all processes request data
     recvreq = comm.irecv(source=exch_rank, tag=recvtag)
+
+    # we can continue doing some more work
+    # we don't have confirmation of having received the data yet...
 
     # Only at this point do we wait until communication has been verified
     # to be complete. Note, it's only at this point can we be sure that

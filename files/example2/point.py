@@ -3,27 +3,26 @@
 # will send and receive data to and from each other in the form of
 # pickled python dictionaries.
 
-from mpi4py import MPI
-import numpy as np
+from mpi4py import MPI # Python MPI library
 
 if __name__ == "__main__":
 
     # Initialise a communicator and get the rank of this process.
     try:
-        comm = MPI.COMM_WORLD
+        comm = MPI.COMM_WORLD # Initiate communications
         rank = comm.Get_rank()
-        nprocs = comm.size
+        size = comm.Get_size()
     except Exception as err:
         sys.exit("Error: %s" % err)
 
     # Create a python dictionary containing the rank and world size which we
     # will send via MPI point-to-point communication methods.
-    send_data = {'rank': rank, 'world': nprocs}
+    send_data = {'rank': rank, 'world': size}
 
     # Even numbered processes send data to process rank + 1, whilst odd
     # numbered processes send data to process rank - 1. Note that even
-    # processes send first and odd processes receive first - two processes
-    # sending or receiving simultaneously results in a 'deadlock'.
+    # processes send first and odd processes receive first - two paired
+    # processes sending or receiving simultaneously results in a 'deadlock'.
     if rank % 2 == 0:
         # Determine rank of process to exchange data with and set communication
         # tags.

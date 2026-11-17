@@ -87,8 +87,8 @@ To run the code you can use as a basis [hello_parallel-slurm.sh]({{ site.baseurl
 
 ## MPI_Send and MPI_Recv
 
-The first type of communication is using a blocking send and recieve.  This will not process any furthe code until the
-send has been completed (i.e. why it is describing as blocking).  With `mpi4py` we can use `comm.send` and `comm.recv`.
+The first type of communication is using a blocking send and recieve.  This will not process any further code until the
+send has been completed (i.e. hence it is described as blocking).  With `mpi4py` we can use `comm.send` and `comm.recv`.
 
 A message is just identifiable data on the network:
 - Think of it as an envelope
@@ -97,23 +97,23 @@ A message is just identifiable data on the network:
 - Data length can be zero to many MBs.
 - Messages can have tag identifiers to further identify them.
 
-The send and receives **have** to work in partnership. Without a receive to pick up the data from the send (and it is
-blocking) the code will hit a deadlock with the code not able to progress with both MPI tasks waiting for their
-communications to complete.  Therefore every send must have a receive (and vice-versa).
+The send and receives **have** to work in partnership. Without a corresponding receiver to pick up the data from the sender
+the code will hit a deadlock with the code not able to progress with both MPI tasks waiting for their communications to
+complete. Therefore every send must have a receive (and vice-versa).
 
 There is also a special `MPI_ANY_SOURCE` to recieve from any sender.
 
 ## Tagging
 
-Tags allow messages to further identified and can be used to make messages are read in the correct order.  There is no
-guarantee messages arrive in the order they were sent.  Tags can have any value but ideally should be identifiable
+Tags allow messages to be further identified and can be used to ensure messages are read in the correct order. There is no
+guarantee messages arrive in the order they were sent. Tags can have any value but ideally should be identifiable
 uniquely so errors in communication can be traced if the tag number is given.
 
 A special tag identifier `MPI_ANY_TAG` can ignore tag number.
 
 ## Python interface
 
-The `mpi4py` interface to `MPI_Send` and `MPI_Recv` is with the following:
+Below is an example of how to access the MPI functions `MPI_Send` and `MPI_Recv` in `mpi4py`:
 
 ~~~
 comm.send(data, dest=?, tag=?)
@@ -123,22 +123,24 @@ data = comm.recv(source=?, tag=?)
 
 > ## Exchanging odd with even
 > 
-> Lets use the knowledge of sending and receiving data by exchanging data between pairs of MPI tasks.
+> Lets use the knowledge of sending and receiving messages by exchanging data between pairs of MPI tasks.
 > - Each pair will exchange data with each other
-> - Tasks with an even rank number will send data to `rank+1`
-> - Tasks with an odd rank number will send data to `rank-1`
+> - Tasks with an even rank number (0,2,4,...) will send data to `rank+1`
+> - Tasks with an odd rank number (1,3,5,...) will send data to `rank-1`
+> - In this way, we will have pairs setup as (0,1), (2,3), (4,5), etc. 
 >
 > > ## Solution
 > > 
-> > The key thing is to make sure one of the pairs (either the odd or even) send the data first whilst the other pair
-> > waits to recieve the data.  See [point.py]({{ site.baseurl }}/files/example2/point.py) and the corresponding [slurm job script]({{ site.baseurl }}/files/example2/pointtopoint-slurm.sh).
+> > The key is to make sure that either the odd or even members in the pairs send the data first while their corresponding partners
+> > wait to recieve the data. See [point.py]({{ site.baseurl }}/files/example2/point.py) and the corresponding [slurm job script]({{ site.baseurl }}/files/example2/pointtopoint-slurm.sh).
 > {: .solution}
 {: .challenge}
 
 ## Non-blocking
 
-A standard send or receive will block waiting for the operation to complete and can cause deadlocks.  The non-blocking
-versions are very similar but need to be careful to wait for communication to complete before using the data location.
+A standard send or receive will block waiting for the operation to complete and can cause deadlocks. The non-blocking
+versions are very similar but we need to be very careful to wait for communication to complete before using the data
+location.
 For example to send:
 
 ~~~
@@ -175,12 +177,12 @@ sending and recieving at the same time.
 
 ## Synchronize
 
-Now that it is possible to communicate between MPI tasks.  It is sometimes useful to make sure all MPI tasks are at the
-same location in the code.  Could be used for:
+Now that it is possible to communicate between MPI tasks. It is sometimes useful to make sure all MPI tasks are at the
+same location in the code. This could be used for:
 - timing locations in the code
 - tidy up the output from the code.
 
-A task enters `MPI_Barrier` and waits for all other MPI tasks to reach the same location in the code.  If an MPI task
+A task enters `MPI_Barrier` and waits for all other MPI tasks to reach the same location in the code. If an MPI task
 does not reach the barrier then a deadlock will occur.
 
 In `mpi4py` this is achieved with `comm.barrier()`.  For example

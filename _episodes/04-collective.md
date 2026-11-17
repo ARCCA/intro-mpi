@@ -12,10 +12,10 @@ keypoints:
 - "Collective communications make the code easier to understand the purpose."
 ---
 
-The previous section coverred the topic of point to point communication where a message can be sent from one MPI task to
-another.  Although these are the building blocks of MPI there are a number of common communication patterns that are
-provided within the MPI standard.  The **collective** communications are when all MPI tasks can be involved in a single
-function call.  This replaces multiple calls to recv and send, easier to understand and provides internal optimisations
+The previous section covered the topic of point to point communication where a message can be sent from one MPI task to
+another. Although these are the building blocks of MPI there are a number of common communication patterns that are
+provided within the MPI standard. The **collective** communications are when all MPI tasks can be involved in a single
+function call. This replaces multiple calls to `recv` and `send`, are easier to understand and provides internal optimisations
 to communication.
 
 ## Broadcasting
@@ -36,7 +36,7 @@ buffer = comm.bcast(buffer, root=0)
 ~~~
 {: .language-python}
 
-Where `buffer` is the the data to be broadcast for the MPI task given as root (in this case 0).  The MPI datatype is
+Where `buffer` is the the data to be broadcast for the MPI task given as root (in this case 0). The MPI datatype is
 optional and automatic discovery can be used instead with the lowercase method name.
 
 ## Scattering and gathering

@@ -33,12 +33,12 @@ keypoints:
 >
 {: .checklist}
 
-A **CPU** is a computer's Central Processing Unit that is in charge of executing the instructions of a program. Modern **CPUs** contain multiple **cores** that are physical independent execution units capable of running one program thread. **CPUs** are attached to a computer's motherboard via a **socket** and high-end motherboards can fit multiple **CPUs** using multiple sockets. A group of computers (hosts) linked together in a network conform a cluster in which each individual computer is referred as a **node**. Clusters are typically housed in server rooms, as is the case for Hawk supercomputer located at the Redwood Building in Cardiff University.
+A **CPU** is a computer's Central Processing Unit that is in charge of executing the instructions of a program. Modern **CPUs** contain multiple **cores** that are physical independent execution units capable of running one program thread. **CPUs** are attached to a computer's motherboard via a **socket** and high-end motherboards can fit multiple **CPUs** using multiple sockets. A group of computers (hosts) linked together in a network conform a cluster in which each individual computer is referred as a **node**. Clusters are typically housed in server rooms, as is the case for Falcon supercomputer located at the Redwood Building in Cardiff University.
 
 ![Common HPC hardware elements](../fig/Nodes.svg "Common HPC hardware elements"){: height="50%" width="50%"}
 
 ## Why go parallel?
-Over time the number of cores per socket have increased considerably, making parallel work on a single computer possible and parallel work on multiple computers even more powerful. The following figure shows the change in market share of number of Cores per Socket as a function of time. In the early 2000's it was more common for systems to have a single core per socket and just a few offered a dual core option. Fast forward to late 2019 and the landscape has changed a lot with several options now available. Systems with 20 cores per socket represented 35% of the market (as with Hawk's Skylake CPUs) while systems with 32 cores per socket represented only 1.2% (as with Hawk's AMD Epyc Rome CPUs). Will this trend continue? It is likely, and therefore, it is worth investing in learning how parallel software works and what parallelization techniques are available.
+Over time the number of cores per socket have increased considerably, making parallel work on a single computer possible and parallel work on multiple computers even more powerful. The following figure shows the change in market share of number of Cores per Socket as a function of time. In the early 2000's it was more common for systems to have a single core per socket and just a few offered a dual core option. Fast forward to late 2019 and the landscape has changed a lot with several options now available. Systems with 20 cores per socket represented 35% of the market (as with former Hawk's Skylake CPUs) while systems with more than 32 cores per socket represented only 1.2% (as with Falcon's AMD Rome and Genoa CPUs). Will this trend continue? It is likely, and therefore, it is worth investing in learning how parallel software works and what parallelization techniques are available.
 
 ![Cores per Socket - Systems Share. Source: Source: Top 500 - http://www.top500.org](../fig/openmp_Cores-per-Socket.png
 "Cores per Socket - Systems Share. Source: Source: Top 500 - http://www.top500.org"){: height="50%" width="50%"}
@@ -65,11 +65,11 @@ When we talk about a computer's speed, we typically are referring to its perform
 
 > ## Did you know?
 >
-> Hawk has two types of **CPUs** available:
-> - Xeon Gold 6148 (Skylake) at 2.4GHz clock speed, 20 **cores** per node and support for AVX512 instructions.
-> - AMD Epyc Rome 7502 at 2.5 GHz clock speed, 32 **cores** per node and support for AVX256 instructions. 
+> Falcon has several types of **CPUs** available including:
+> - AMD EPYC Genoa 9654 Zen 4 with 96 cores per socket and support for AVX512 instructions.
+> - AMD Epyc Rome 7502 Zen2 with 32 cores per socket and support for AVX256 instructions. 
 > 
-> Find out more here: [SCW Portal](https://portal.supercomputing.wales/index.php/about-hawk/)
+> Find out more here: [About Falcon](https://wiki.arcca.cf.ac.uk/index.php/About_Falcon)
 >
 {: .callout}
 

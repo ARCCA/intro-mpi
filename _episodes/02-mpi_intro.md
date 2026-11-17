@@ -87,7 +87,7 @@ hello_world
 
 ![mpirun example](../fig/mpirun_example.png)
 
-A more meaningful *hello world* program may be written as:
+A more meaningful [*hello world*]({{ site.baseurl }}/files/example1/hello_parallel.py) program may be written as:
 ~~~
 #!/bin/env python
 #
@@ -109,22 +109,49 @@ if __name__ == "__main__":
 ~~~
 {: .language-python}
 
-Then run in SLURM with:
+Then run in SLURM with the [script]({{ site.baseurl }}/files/example1/hello_parallel-slurm.sh) below:
 
 ~~~
 #!/bin/bash --login
-#SBATCH -p compute
-#SBATCH --account=scw1148
-#SBATCH --ntasks=3
-#SBATCH --tasks-per-node=3
-#SBATCH -o HelloPython.out
-#SBATCH -t 00:05:00
+#SBATCH -J HelloParallel
+#SBATCH -o hello_parallel.out.%j
+#SBATCH -n 12
+#SBATCH -t 0-00:05:00
+#SBATCH -p dev
+#SBATCH --account scwfXXXXX_j_doe_X # check your accounts with the command `myaccounts`
 
-# Load required modules. module purge
-module load python
-module load mpi
-# Run 3 (mpirun knows SLURM variables) copies of the code
-mpirun python3 hello_parallel.py
+# if run on a training session add your reservation code as
+# #SBATCH --reservation=training
+
+set -euo pipefail
+
+# Load required modules.
+module purge
+module load mpi4py/4.1.0-gompi-2025b
+module list
+
+# use scratch directory associated with account in current job
+# see output of `myprojects` for a full list of your projects
+# and replace if you prefer another
+MYPROJECT=`echo ${SLURM_JOB_ACCOUNT} | cut -d'_' -f1 | awk '{ print toupper($0) }'`
+# Create an output directory on the fast scratch filesystem, and
+# run from this directory.
+SCRATCH=/scratch/${MYPROJECT}/${USER}/mpi_training/${SLURM_JOB_ID}
+# check if we can actually create our SCRATCH directory
+mkdir -p ${SCRATCH} || (echo "error, cannot create $SCRATCH directory" && exit 1)
+
+cd $SCRATCH
+
+# Copy the python code to the run directory
+cp $SLURM_SUBMIT_DIR/hello_parallel.py .
+
+# Run a number of copies of the code equal to the number of
+# MPI processes requested.
+mpirun -np ${SLURM_NTASKS} python3 hello_parallel.py
+
+# clean up scratch (only reached if everything above succeeded)
+cd "${SLURM_SUBMIT_DIR}"
+rm -rf -- "${SCRATCH:?}"
 ~~~
 {: .language-bash}
 
@@ -150,32 +177,4 @@ at import time the `MPI_init_thread` is called. At exit `MPI_finalize` is called
   - encapsulates the MPI protocol in wrapper functions to allow passing of python objects not coverred by the MPI
    standard.
 
-> ## Install the package on Hawk/Linux
->
-> Since this is a Python package, anyone should be able to download and install the package.  How would you go about
-> doing this? (Hint: Look at previous [SLURM Advanced Topics](https://arcca.github.io/slurm_advanced_topics/08-packages/index.html)
-> > ## Solution
-> >
-> > There is a dependency on MPI so you would need to load the mpi module.  The Python package will already load a
-> > compiler.  Check `module list` after loading modules.
-> > 
-> > To install **mpi4py**:
-> > ~~~
-> > $ module load python
-> > $ module load mpi
-> > $ python3 -m venv venv
-> > $ . venv/bin/activate
-> > $ pip install -U pip
-> > $ pip install mpi4py
-> > $ python3 -c "import mpi4py"
-> > ~~~
-> > {: .language-bash}
-> {: .solution}
-{: .challenge}
-
-## Other platforms
-
-Each platform would have a way to install Python modules to work with MPI.
-
 {% include links.md %}
-
