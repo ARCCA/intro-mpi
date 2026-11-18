@@ -60,22 +60,31 @@ from a file.
 For example to write from the leader:
 
 ~~~
+#!/bin/env python3
 from mpi4py import MPI
 import numpy as np
 
 amode = MPI.MODE_WRONLY|MPI.MODE_CREATE
 comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
-fh = MPI.File.Open(comm, "./datafile.mpi", amode)
+filename="./datafile.independent.mpi"
+fh = MPI.File.Open(comm, filename, amode)
 
-buffer = np.empty(10, dtype=np.int)
+item_count = 10
+
+buffer = np.empty(item_count, dtype='i')
 buffer[:] = rank
 
-offset = comm.Get_rank() * buffer.nbytes
-if rank == 0:
-    fh.Write_at(offset, buffer)
+print(f"{rank} : {buffer}")
 
+offset = comm.Get_rank() * buffer.nbytes
+fh.Write_at(offset, buffer)
 fh.Close()
+
+# read file back just for confirmation
+if rank == 0:
+    data = np.fromfile(filename, dtype=np.intc)
+    print(data)
 ~~~
 {: .language-python}
 
@@ -85,8 +94,8 @@ example in [mpiio.independent.py]({{ site.baseurl }}/files/example5/mpiio.indepe
 
 ### Collective non-contiguous I/O
 
-If a file operation needs to be performed across the whole file but not contigious (e.g. gaps between data that the each
-task reads).  This uses the concept of a *File view* set with `MPI_File_set_view`.  `mpi4py` uses `fh.Set_view` where
+If a file operation needs to be performed across the whole file but not contigious (e.g. gaps between data that each
+task reads). This uses the concept of a *File view* set with `MPI_File_set_view`. `mpi4py` uses `fh.Set_view` where
 `fh` is the file handle returned from `MPI.File.Open`.
 
 ~~~
@@ -113,27 +122,31 @@ For example:
 from mpi4py import MPI
 import numpy as np
 
+amode = MPI.MODE_WRONLY|MPI.MODE_CREATE
 comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
+filename="./datafile.noncontig.mpi"
+fh = MPI.File.Open(comm, filename, amode)
 size = comm.Get_size()
-
-amode = MPI.MODE_WRONLY|MPI.MODE_CREATE
-fh = MPI.File.Open(comm, "./datafile.noncontig", amode)
 
 item_count = 10
 
 buffer = np.empty(item_count, dtype='i')
 buffer[:] = rank
 
-filetype = MPI.INT.Create_vector(item_count, 1, size)
+filetype = MPI.INT.Create_vector(count=item_count, blocklength=1, stride=size)
 filetype.Commit()
-
 displacement = MPI.INT.Get_size() * rank
 fh.Set_view(displacement, filetype=filetype)
 
 fh.Write_all(buffer)
 filetype.Free()
 fh.Close()
+
+# read file back just for confirmation
+if rank == 0:
+    data = np.fromfile(filename, dtype=np.intc)
+    print(data
 ~~~
 {: .language-python}
 You can find an example in [mpiio.non.contiguous.py]({{ site.baseurl }}/files/example5/mpiio.non.contiguous.py) and its corresponding [mpiio.non.contiguous-slurm.sh]({{ site.baseurl }}/files/example5/mpiio.non.contiguous-slurm.sh).
