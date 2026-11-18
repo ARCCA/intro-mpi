@@ -4,18 +4,16 @@
 # over an arbitrary number of processes, and then collates the result at
 # the end.
 
-# load the required modules
-from mpi4py import MPI
-import numpy as np
-import sys
+from mpi4py import MPI # Python MPI library
+import numpy as np     # To create a data array to be communicated to all processes
 
 if __name__ == "__main__":
 
     # Initialise a communicator and get the rank of this process.
     try:
-        comm = MPI.COMM_WORLD
+        comm = MPI.COMM_WORLD # Initiate communications
         rank = comm.Get_rank()
-        nprocs = comm.size
+        size = comm.Get_size()
     except Exception as err:
         sys.exit("Error: %s" % err)
 
@@ -36,7 +34,7 @@ if __name__ == "__main__":
     # block of values is broken up into a number equal to the number of
     # processes and each process calculates the range of values it will
     # be working on.
-    nlocal = (numpoints - 1) / nprocs + 1
+    nlocal = (numpoints - 1) / size + 1
     nbeg = int((rank * nlocal) + 1)
     nend = int(min((nbeg + nlocal - 1), numpoints))
 

@@ -87,12 +87,12 @@ There are also the non-blocking versions of all communication, e.g. `MPI_Iallgat
 > Should we use `comm.Scatter` or `comm.scatter`?
 > > ## Solution
 > >
-> > In this example we fix the size of the array to scatter as `nprocs * allocsize` where `allocsize = 2` and `nprocs`
+> > In this example we fix the size of the array to scatter as `size * allocsize` where `allocsize = 2` and `size`
 > > is the size of the communicator (number of MPI tasks).
 > > ~~~
 > > if rank == 0:
 > >   senddata = np.arange(
-> >   nprocs * allocsize, dtype='i').reshape(nprocs, allocsize)
+> >   size * allocsize, dtype='i').reshape(size, allocsize)
 > > else:
 > >   senddata = None
 > > ~~~
@@ -119,10 +119,10 @@ operation to occur with the result returned on one MPI task.  `mpi4py` provides 
 - `MPI_MIN` - Returns the minimum element.
 - `MPI_SUM` - Sums the elements.
 - `MPI_PROD` - Multiplies all elements.
-- `MPI_LAND` - Performs a logical and across the elements.
-- `MPI_LOR` - Performs a logical or across the elements.
-- `MPI_BAND` - Performs a bitwise and across the bits of the elements.
-- `MPI_BOR` - Performs a bitwise or across the bits of the elements.
+- `MPI_LAND` - Performs a logical AND across the elements.
+- `MPI_LOR` - Performs a logical OR across the elements.
+- `MPI_BAND` - Performs a bitwise AND across the bits of the elements.
+- `MPI_BOR` - Performs a bitwise OR across the bits of the elements.
 - `MPI_MAXLOC` - Returns the maximum value and the rank of the process that owns it.
 - `MPI_MINLOC` - Returns the minimum value and the rank of the process that owns it.
 
