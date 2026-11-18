@@ -1,11 +1,11 @@
-#!/bin/env python
+#!/bin/env python3
 # Demonstration of the imposition of a simple cartesian geometry on a set of
 # processes. In this case we generate a uniform 2-D grid in which each
 # element passes a value to its nearest neighbour to the right.
 
 from mpi4py import MPI
 import numpy as np
-import sys
+import math
 
 if __name__ == "__main__":
 
@@ -14,15 +14,16 @@ if __name__ == "__main__":
     try:
         comm = MPI.COMM_WORLD
         rank = comm.Get_rank()
-        nprocs = comm.size
+        size = comm.size
     except Exception as err:
         sys.exit("Error: %s" % err)
 
     # We want to create a square array of elements, so take the square root
     # of the number of processes to get the length of each axis.
-    axis = np.sqrt([nprocs])
+    axis = math.isqrt(size)  # or int(np.sqrt(size))
+    assert axis * axis == size, "Number of processes must be a perfect square!"
 
-    # Create a cartesian geometry communicator, with no wrapping at the edges. 
+    # Create a cartesian geometry communicator, with no wrapping at the edges.
     cart = comm.Create_cart(dims=(axis, axis),
                             periods=(False, False), reorder=True)
 

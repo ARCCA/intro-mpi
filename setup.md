@@ -4,6 +4,13 @@ title: Setup
 permalink: /setup/
 ---
 
+# Data
+We use a series of python files and SLURM job scripts to demonstrate MPI concepts.
+You can use the links available through the training material to access individual
+files, or download all from [here]({{ site.baseurl }}/files/examples-mpi.tar.gz).
+
+
+# Software
 There are several pieces of software you will wish to install before the workshop.
 Though installation help will be provided at the workshop,
 we recommend that these tools are installed (or at least downloaded) beforehand.
@@ -36,7 +43,7 @@ This will allow easy file transfer to and from the remote systems.
 
 ## MPI
 
-If not using Hawk see below for platform instructions.
+**If not using Falcon see below for platform instructions.**
 
 ### Microsoft Windows
 
